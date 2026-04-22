@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 
 void main() {
-  runApp(const ModaUygulamasiApp());
+  runApp(const FashionApp ());
 }
 
-class ModaUygulamasiApp extends StatelessWidget {
-  const ModaUygulamasiApp({super.key});
+class FashionApp  extends StatelessWidget {
+  const FashionApp ({super.key});
 
   @override
   Widget build(BuildContext context) {
