@@ -1,9 +1,11 @@
 # Fashion App (Flutter)
 
 ## Uygulama Görselleri
-<img width="1920" height="1440" alt="192shots_so" src="https://github.com/user-attachments/assets/b22e6105-8093-4379-95f8-b4d914550141" />
-<img width="1920" height="1440" alt="164shots_so" src="https://github.com/user-attachments/assets/539eae1d-3025-437e-aba1-5ff0286d64f6" />
-<img width="1920" height="1440" alt="843shots_so" src="https://github.com/user-attachments/assets/3c97969d-622d-4436-9a1d-ee4f7fd40885" />
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/b22e6105-8093-4379-95f8-b4d914550141" width="30%" />
+  <img src="https://github.com/user-attachments/assets/539eae1d-3025-437e-aba1-5ff0286d64f6" width="30%" />
+  <img src="https://github.com/user-attachments/assets/3c97969d-622d-4436-9a1d-ee4f7fd40885" width="30%" />
+</div>
 
 Modern ve şık bir **moda uygulaması UI projesi**.
 Flutter ile geliştirilmiş, etkileşimler içeren bir tasarım çalışmasıdır.
