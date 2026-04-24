@@ -1,51 +1,224 @@
 import 'package:flutter/material.dart';
 import '../data/app_data.dart';
+import '../models/fashion_item.dart';
 import '../pages/detail_page.dart';
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   const PostCard({super.key});
 
   @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  bool isLiked = false;
+  int likeCount = 2300;
+
+  final List<String> comments = [
+    'Kombin çok güzel görünüyor.',
+    'Çanta ve pantolon uyumu harika.',
+  ];
+
+  final TextEditingController commentController = TextEditingController();
+
+  void toggleLike() {
+    setState(() {
+      isLiked = !isLiked;
+      likeCount += isLiked ? 1 : -1;
+    });
+  }
+
+  void openComments() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(22)),
+      ),
+      builder: (_) {
+        return StatefulBuilder(
+          builder: (context, modalSetState) {
+            return Padding(
+              padding: EdgeInsets.only(
+                left: 18,
+                right: 18,
+                top: 18,
+                bottom: MediaQuery.of(context).viewInsets.bottom + 18,
+              ),
+              child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.58,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: SizedBox(
+                        width: 42,
+                        height: 4,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: Color(0xFFD5D5D5),
+                            borderRadius: BorderRadius.all(Radius.circular(4)),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 18),
+                    const Text(
+                      'Yorumlar',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Expanded(
+                      child: ListView.separated(
+                        itemCount: comments.length,
+                        separatorBuilder: (_, __) => const Divider(),
+                        itemBuilder: (context, index) {
+                          return Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const CircleAvatar(
+                                radius: 17,
+                                backgroundImage:
+                                    AssetImage(AppData.userAvatar),
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Text(
+                                  comments[index],
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    height: 1.4,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: commentController,
+                            decoration: InputDecoration(
+                              hintText: 'Yorum yaz...',
+                              filled: true,
+                              fillColor: const Color(0xFFF2F2F2),
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 14,
+                                vertical: 12,
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide: BorderSide.none,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        CircleAvatar(
+                          backgroundColor: const Color(0xFFA56D47),
+                          child: IconButton(
+                            onPressed: () {
+                              final text = commentController.text.trim();
+
+                              if (text.isEmpty) return;
+
+                              modalSetState(() {
+                                comments.add(text);
+                                commentController.clear();
+                              });
+
+                              setState(() {});
+                            },
+                            icon: const Icon(
+                              Icons.send,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void openDetail(FashionItem item) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => DetailPage(item: item),
+      ),
+    );
+  }
+
+  String formatLikes(int value) {
+    if (value >= 1000) {
+      return '${(value / 1000).toStringAsFixed(1)}k';
+    }
+    return value.toString();
+  }
+
+  @override
+  void dispose() {
+    commentController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final items = AppData.fashionItems;
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
+      margin: const EdgeInsets.symmetric(horizontal: 14),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(22),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
+            color: Colors.black.withOpacity(0.07),
+            blurRadius: 18,
+            offset: const Offset(0, 5),
           ),
         ],
       ),
       child: Column(
         children: [
-          _buildHeader(),
+          buildHeader(),
           const SizedBox(height: 14),
-          _buildDescription(),
-          const SizedBox(height: 12),
-          _buildImageGrid(context),
-          const SizedBox(height: 12),
-          _buildTags(),
-          const SizedBox(height: 16),
+          buildDescription(),
+          const SizedBox(height: 14),
+          buildImageGrid(items),
+          const SizedBox(height: 14),
+          buildTags(),
+          const SizedBox(height: 14),
           const Divider(height: 1, color: Color(0xFFEAEAEA)),
           const SizedBox(height: 12),
-          _buildBottomStats(),
+          buildStats(),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget buildHeader() {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CircleAvatar(
+        const CircleAvatar(
           radius: 24,
-          backgroundImage: const AssetImage(AppData.userAvatar),
+          backgroundImage: AssetImage(AppData.userAvatar),
         ),
         const SizedBox(width: 12),
         const Expanded(
@@ -57,7 +230,6 @@ class PostCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 17,
                   fontWeight: FontWeight.w700,
-                  color: Colors.black87,
                 ),
               ),
               SizedBox(height: 4),
@@ -66,53 +238,44 @@ class PostCard extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.grey,
-                  fontWeight: FontWeight.w500,
                 ),
               ),
             ],
           ),
         ),
-        const Icon(
-          Icons.more_vert,
-          color: Colors.grey,
-          size: 20,
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Icons.more_vert, color: Colors.grey),
         ),
       ],
     );
   }
 
-  Widget _buildDescription() {
+  Widget buildDescription() {
     return const Text(
       'This official website features a ribbed knit zipper jacket that is modern and stylish. It looks very temperament and is recommended to friends',
       style: TextStyle(
-        fontSize: 13.5,
-        color: Color(0xFF9A9A9A),
+        fontSize: 13,
+        color: Color(0xFF999999),
         height: 1.45,
       ),
     );
   }
 
-  Widget _buildImageGrid(BuildContext context) {
-    final images = AppData.postGridImages;
-
+  Widget buildImageGrid(List<FashionItem> items) {
     return SizedBox(
-      height: 245,
+      height: 330,
       child: Row(
         children: [
           Expanded(
             child: GestureDetector(
-              onTap: () {
-                _goToDetail(context);
-              },
-              child: Hero(
-                tag: images[0],
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(14),
-                  child: Image.asset(
-                    images[0],
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+              onTap: () => openDetail(items[0]),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Image.asset(
+                  items[0].mainImage,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -123,18 +286,13 @@ class PostCard extends StatelessWidget {
               children: [
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {
-                      _goToDetail(context);
-                    },
-                    child: Hero(
-                      tag: images[1],
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: Image.asset(
-                          images[1],
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
+                    onTap: () => openDetail(items[1]),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        items[1].mainImage,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -142,18 +300,13 @@ class PostCard extends StatelessWidget {
                 const SizedBox(height: 10),
                 Expanded(
                   child: GestureDetector(
-                    onTap: () {
-                      _goToDetail(context);
-                    },
-                    child: Hero(
-                      tag: images[2],
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: Image.asset(
-                          images[2],
-                          width: double.infinity,
-                          fit: BoxFit.cover,
-                        ),
+                    onTap: () => openDetail(items[2]),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(16),
+                      child: Image.asset(
+                        items[2].mainImage,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
                     ),
                   ),
@@ -166,76 +319,76 @@ class PostCard extends StatelessWidget {
     );
   }
 
-  Widget _buildTags() {
+  Widget buildTags() {
     return Row(
       children: [
-        _buildTag('# Louis vuitton'),
+        buildTag('# Louis vuitton'),
         const SizedBox(width: 10),
-        _buildTag('# Chloé'),
+        buildTag('# Chloé'),
       ],
     );
   }
 
-  Widget _buildTag(String text) {
+  Widget buildTag(String text) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFF3F1F1),
+        color: const Color(0xFFF4F2F2),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Text(
         text,
         style: const TextStyle(
           fontSize: 12,
-          color: Color(0xFF9E9E9E),
+          color: Color(0xFF8E8E8E),
           fontWeight: FontWeight.w600,
         ),
       ),
     );
   }
 
-  Widget _buildBottomStats() {
+  Widget buildStats() {
     return Row(
       children: [
         const Icon(Icons.reply, size: 18, color: Colors.grey),
         const SizedBox(width: 4),
         const Text(
           '1.7k',
-          style: TextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: Colors.grey),
         ),
         const SizedBox(width: 18),
-        const Icon(Icons.comment_outlined, size: 18, color: Colors.grey),
-        const SizedBox(width: 4),
-        const Text(
-          '325',
-          style: TextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.w600,
+        GestureDetector(
+          onTap: openComments,
+          child: Row(
+            children: [
+              const Icon(Icons.comment_outlined, size: 18, color: Colors.grey),
+              const SizedBox(width: 4),
+              Text(
+                comments.length.toString(),
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ],
           ),
         ),
         const Spacer(),
-        const Icon(Icons.favorite, size: 20, color: Colors.red),
-        const SizedBox(width: 4),
-        const Text(
-          '2.3k',
-          style: TextStyle(
-            color: Colors.grey,
-            fontWeight: FontWeight.w600,
+        GestureDetector(
+          onTap: toggleLike,
+          child: Row(
+            children: [
+              Icon(
+                isLiked ? Icons.favorite : Icons.favorite_border,
+                size: 22,
+                color: isLiked ? Colors.red : Colors.grey,
+              ),
+              const SizedBox(width: 4),
+              Text(
+                formatLikes(likeCount),
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ],
           ),
         ),
       ],
-    );
-  }
-
-  void _goToDetail(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => const DetailPage(),
-      ),
     );
   }
 }
