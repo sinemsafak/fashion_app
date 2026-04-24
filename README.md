@@ -1,16 +1,107 @@
-# fashion_app
+# Fashion App (Flutter)
 
-A new Flutter project.
+## Uygulama Görselleri
+<img width="1920" height="1440" alt="192shots_so" src="https://github.com/user-attachments/assets/b22e6105-8093-4379-95f8-b4d914550141" />
+<img width="1920" height="1440" alt="164shots_so" src="https://github.com/user-attachments/assets/539eae1d-3025-437e-aba1-5ff0286d64f6" />
+<img width="1920" height="1440" alt="843shots_so" src="https://github.com/user-attachments/assets/3c97969d-622d-4436-9a1d-ee4f7fd40885" />
 
-## Getting Started
+Modern ve şık bir **moda uygulaması UI projesi**.
+Flutter ile geliştirilmiş, etkileşimler içeren bir tasarım çalışmasıdır.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+##  Özellikler
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+*  Modern ve responsive UI
+* hikaye (story) sistemi
+* Beğeni (like) sistemi (artır / azalt)
+* Yorum yapma ve görüntüleme (bottom sheet)
+* Dinamik ürün detay sayfası
+* Scroll edilebilir ana ekran
+* Özel font kullanımı (Montserrat)
+* Modüler ve temiz kod yapısı
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+##  Kullanılan Teknolojiler
+
+* Flutter
+* Dart
+* Material UI
+
+---
+
+## 📂 Proje Yapısı
+
+```text
+lib/
+│
+├── data/          → Sabit veriler
+├── models/        → Veri modelleri
+├── pages/         → Ekranlar
+├── widgets/       → UI bileşenleri
+└── main.dart      → Uygulama başlangıcı
+
+assets/
+├── images/        → Görseller
+└── fonts/         → Fontlar
+```
+
+---
+
+## ⚙️ Kurulum
+
+### 1. Projeyi klonla
+
+```bash
+git clone https://github.com/kullaniciAdi/fashion_app.git
+cd fashion_app
+```
+
+### 2. Paketleri yükle
+
+```bash
+flutter pub get
+```
+
+### 3. Uygulamayı çalıştır
+
+```bash
+flutter run
+```
+
+---
+
+##  Gereksinimler
+
+* Flutter SDK (>=3.x)
+* Dart SDK
+* Android Studio / VS Code
+
+---
+
+##  Öğrenilen Konular
+
+Bu proje ile:
+
+* Flutter layout sistemi
+* State yönetimi (setState)
+* Navigation (sayfa geçişleri)
+* Custom widget yapısı
+* UI/UX tasarım pratiği
+
+gibi konular uygulanmıştır.
+
+---
+
+## 📄 Lisans
+
+Bu proje eğitim ve portfolyo amaçlı geliştirilmiştir.
+
+---
+
+## 👨‍💻 Geliştirici
+
+**Fashion App Flutter UI Project**
+
+GitHub: https://github.com/kullaniciAdi
