@@ -102,8 +102,3 @@ Bu proje eğitim ve portfolyo amaçlı geliştirilmiştir.
 
 ---
 
-## 👨‍💻 Geliştirici
-
-**Fashion App Flutter UI Project**
-
-GitHub: https://github.com/kullaniciAdi
